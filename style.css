@@ -81,7 +81,7 @@ body {
     background-color: var(--navbar-text-color);
   }
   .navbar-brand{
-    padding-left: 80px;
+    padding-left: 0;
   }
   
   .menu-opened {
@@ -104,7 +104,7 @@ body {
       
   }
   #navbar-menu {
-      margin-left: 42%; /* Adjust the value as needed */
+      margin-left: 48%; /* Adjust the value as needed */
       padding-right: 65px;
   
   }

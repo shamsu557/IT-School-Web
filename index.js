@@ -56,3 +56,10 @@ function topFunction() {
 document.body.scrollTop = 0;
 document.documentElement.scrollTop = 0;
 }
+//carousel change time
+$(document).ready(function(){
+  $('#carouselComputech').carousel({
+      interval: 4000, // Change slide every 3 seconds (adjust as needed)
+      pause: false // Do not pause on hover
+  });
+});

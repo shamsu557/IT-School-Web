@@ -114,26 +114,29 @@ body {
   
       }
   }
+
+  
 /* Welcome section styles */
-.container-welcome {
-  width: 100%;
-  background-color: rgba(255, 250, 240, 0.7);
-  height: 78vh;
-  padding-top: 20px;
-  background: url('bgrnd2.jpg') top center;
+.carousel-item {
+  height: 75vh; /* Adjust height as needed */
   background-size: cover;
-  position: relative;
+  background-position: center;
 }
 
-.container-welcome:before {
-  content: "";
-  background: rgba(22, 21, 21, 0.314);
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
+#home .carousel-item:nth-child(1) {
+  background-image: url('bgrnd2.jpg');
 }
+
+#home .carousel-item:nth-child(2) {
+  background-image: url('comp.jpg');
+}
+
+#home .carousel-item:nth-child(3) {
+  background-image: url('web.jpg');
+}
+
+
+
 
 .container-welcome h1 {
   font-size: 3rem;

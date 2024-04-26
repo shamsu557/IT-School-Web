@@ -39,12 +39,46 @@
     </div>
 </nav>
 
-<section id="home" class="py-5 container-welcome">
-    <div class="container text-center">
-      <h1 class="py-5  text-light">Welcome to Computech Nexus Academy</h1>
-      <p class="lead font-weight-bold text-success pt-1">Empowering your journey in Technology</p>
-    </div>
-  </section>
+<!-- Carousel Section -->
+<section id="home" class="py-3 container-welcome">
+  <div id="carouselComputech" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+          <!-- First Slide -->
+          <div class="carousel-item active">
+              <div class="container text-center">
+                  <h1 class="py-5 text-white">Welcome to Computech Nexus Academy</h1>
+                  <p class="lead font-weight-bold text-white pb-1">Fueling Your Technology Journey</p>
+              </div>
+          </div>
+          <!-- Second Slide -->
+          <div class="carousel-item">
+              <div class="container text-center">
+                  <h1 class="py-5 text-light">Computer Appreciation Course</h1>
+                  <p class="lead font-weight-bold text-white pb-1">Master MS Office, OS, Internet, and Network Basics</p>
+              </div>
+          </div>
+          <!-- Third Slide -->
+          <div class="carousel-item">
+              <div class="container text-center">
+                  <h1 class="py-5 text-light">Web Development Course</h1>
+                  <p class="lead font-weight-bold text-white pb-1">Learn HTML, CSS, Bootstrap, and JavaScript</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<!-- End of Carousel Section -->
+
+<!-- Script for Automatic Sliding -->
+<script>
+  $(document).ready(function(){
+      $('#carouselComputech').carousel({
+          interval: 3000, // Change slide every 3 seconds (adjust as needed)
+          pause: false // Do not pause on hover
+      });
+  });
+</script>
+
 
 <section id="about" class="py-5 bg-light">
   <div class="container text-center">
@@ -122,6 +156,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

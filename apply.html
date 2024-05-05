@@ -42,20 +42,20 @@
     <div class="container center-form pt-1">
         <div class="form-container">
             <h1 class="text-center">Application Form</h1>
-            <form id="applicationForm" action="/submit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <form action="/submit" method="post" id="applicationForm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="surname">Surname:</label>
-                            <input type="text" class="form-control" id="surname" name="surname" required aria-label="Surname">
-                            <div class="invalid-feedback">Please enter your surname.</div> <!-- Error message for validation -->
+                            <input type="text" class="form-control" id="surname" name="surname" required>
+                            <div class="invalid-feedback">Please enter your surname.</div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="firstName">First Name:</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName" required aria-label="First Name">
-                            <div class="invalid-feedback">Please enter your first name.</div> <!-- Error message for validation -->
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                            <div class="invalid-feedback">Please enter your first name.</div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastName">Last Name:</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName" aria-label="Last Name">
+                            <input type="text" class="form-control" id="lastName" name="lastName">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -206,6 +206,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="index.js"></script>
   </body>
   </html>

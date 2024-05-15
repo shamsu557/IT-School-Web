@@ -1,8 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const multer = require('multer'); // Add this line
 const mysql = require('./mysql');
-const routes = require('./routes');
+const appPayRoute = require('./appFeePaymentRoute');
+const firstPayRoute = require('./firstinst');
+
+
 
 const app = express();
 
@@ -18,31 +22,32 @@ app.use((err, req, res, next) => {
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the index.html file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Set up multer storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Destination folder for uploaded files
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname); // Unique filename for uploaded files
+    }
 });
 
-// Serve the login.html file
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
+// Create multer instance
+const upload = multer({ storage: storage });
 
-// Serve the app_payment.html file
-app.get('/app_payment', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'app_payment.html'));
-});
+// Serve HTML files
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+app.get('/app_payment', (req, res) => res.sendFile(path.join(__dirname, 'public', 'app_payment.html')));
+app.get('/apply', (req, res) => res.sendFile(path.join(__dirname, 'public', 'apply.html')));
+app.get('/school_payment', (req, res) =>res.sendFile(path.join(__dirname, 'public', 'school_payment.html')));
 
-// Serve the apply.html file
-app.get('/apply', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'apply.html'));
-});
+// Use multer middleware for handling file uploads
+app.use(upload.any());
 
-// Use routes defined in routes.js
-routes(app, mysql);
-
+// Use routes defined 
+firstPayRoute(app);
+appPayRoute(app)
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

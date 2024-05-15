@@ -1,0 +1,508 @@
+const db = require('./mysql');
+
+module.exports = function (app) {
+    // Handle form submission
+    app.post('/submit', (req, res) => {
+        const { surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert } = req.body;
+
+        // Check if the email or phone number already exists in the database
+        const checkIfExistsQuery = 'SELECT * FROM form_data WHERE emailAddress = ? OR phoneNumber = ?';
+        db.query(checkIfExistsQuery, [emailAddress, phoneNumber], (checkErr, checkResult) => {
+            if (checkErr) {
+                console.error('Error checking for existing email or phone number:', checkErr);
+                return res.status(500).send('An error occurred while processing the form');
+            }
+
+            if (checkResult.length > 0) {
+                // Email or phone number already exists in the database
+                return res.status(400).send('Email address or phone number already registered');
+            }
+
+            // Calculate application fee and determine duration based on the course applied
+            let applicationFee = 0;
+            let duration = '';
+            switch (courseApplied.toLowerCase()) {
+                case 'web development':
+                    applicationFee = 100;
+                    duration = 'four months';
+                    break;
+                case 'computer appreciation':
+                    applicationFee = 110;
+                    duration = 'six weeks';
+                    break;
+                default:
+                    applicationFee = 0;
+                    duration = 'to be determined';
+                    break;
+            }
+
+            // Generate temporary application number
+            let initials = '';
+            let courseAbbreviation = '';
+            switch (courseApplied.toLowerCase()) {
+                case 'web development':
+                    initials = 'F';
+                    courseAbbreviation = 'WEB';
+                    break;
+                case 'computer appreciation':
+                    initials = 'F';
+                    courseAbbreviation = 'CA';
+                    break;
+                default:
+                    initials = 'O';
+                    courseAbbreviation = 'OTH';
+                    break;
+            }
+            const uniqueNumber = Math.floor(Math.random() * 10000);
+            const applicationNumber = initials + courseAbbreviation + uniqueNumber;
+
+            // Insert form data into MySQL database with empty reference number and no admission number
+            const insertQuery = 'INSERT INTO form_data (applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert, applicationFee, schoolFee, referenceNumber, admissionNumber, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            db.query(insertQuery, [applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert, applicationFee, schoolFee, '', '', '', ''], (insertErr, insertResult) => {
+                if (insertErr) {
+                    console.error('Error inserting data into MySQL:', insertErr);
+                    return res.status(500).send('An error occurred while submitting the form');
+                }
+                console.log('Data inserted into MySQL table:', insertResult);
+
+                // Send response with application details
+                const welcomeMessage = `Dear ${firstName}, congratulations! You have applied to study ${courseApplied} at CompuTech Nexus Academy. The duration of the course is ${duration}. Your application number is ${applicationNumber}. Application fee: ${applicationFee}. School fee: ${schoolFee}. Please proceed to download your application letter and proceed to payment.`;
+                res.send(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Form Submission</title>
+                        <style>
+                            body {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                height: 100vh;
+                                margin: 0;
+                                text-align: center;
+                            }
+                            .message {
+                                width: 80%;
+                                max-width: 600px;
+                                margin: auto;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="message">
+                        <p>${welcomeMessage}</p>
+                        <p>Click <a href="/application_letter/${applicationNumber}" target="_blank">here</a> to download or print your application letter.</p>
+                        <p>Click continue to proceed to payment of application Fee</p>
+                        <form action="/app_payment" method="GET">
+                            <input type="hidden" name="applicationNumber" value="${applicationNumber}">
+                            <button type="submit">Continue</button>
+                        </form>
+                        </div>
+                    </body>
+                    </html>
+                `);
+            });
+        });
+    });
+    // Serve the application letter based on application number
+    app.get('/application_letter/:applicationNumber', (req, res) => {
+        const applicationNumber = req.params.applicationNumber;
+
+        // Query the database to fetch student details based on the application number
+        const query = 'SELECT * FROM form_data WHERE applicationNumber = ?';
+        db.query(query, [applicationNumber], (err, result) => {
+            if (err) {
+                console.error('Error fetching student details:', err);
+                return res.status(500).send('An error occurred while fetching student details');
+            }
+
+            if (result.length === 1) {
+                const studentDetails = result[0];
+                // Generate the content of the application letter
+                const applicationLetter = `
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Application Letter</title>
+                    <style>
+                        body {
+                            text-align: center;
+                            font-family: Arial, sans-serif;
+                        }
+                        .school-name {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-top: 40px; /* Adjust margin to push the school name down */
+                            margin-bottom: 40px;
+                        }
+                        .school-logo {
+                            margin-bottom: 15px;
+                            width: 110px; /* Adjust the width and height to your preference */
+                            height: 110px;
+                            border-radius: 50%; /* Make the image circular */
+                            object-fit: cover; /* Ensure the image covers the circular area */
+                        }
+                        .application-letter {
+                            margin: auto;
+                            max-width: 600px;
+                            padding: 20px;
+                            border: 2px solid #000;
+                        }
+                        .signature {
+                            margin-top: 40px;
+                            text-align: right;
+                        }
+                        .signature img {
+                            width: 150px; /* Adjust the width of the signature image */
+                            height: auto;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="school-name"><h1>CompuTech Nexus Academy</h1></div>
+                    <h3>32Km, Maiduguri Road, Gano 2 Primary School, Dawakin Kudu L.G.A, Kano, Nigeria<br></h3>
+                    <h4>Contact: shamsusabocom@gmail.com, 1440shamsusabo@gmail.com</h4>
+                    <center><h4>08030909793</h4></center>
+                    <img src="logo.jpg" class="school-logo" alt="Logo">
+                    <div class="application-letter">
+                    <h1>Application Letter</h1> 
+                    <p>Dear <strong>${studentDetails.firstName} ${studentDetails.surname}</strong>,</p>
+                    <p>Congratulations! You have applied to study ${studentDetails.courseApplied} at CompuTech Nexus Academy.</p>
+                    <p>Your application number is <strong>${applicationNumber}</strong>.</p>
+                    <p>Please keep this letter safe as proof of your application.</p>                    
+                        <p>Sincerely,</p>
+                        <div style="text-align: center;">
+                            <p>Registrar</p>
+                            <img src="registrar_signature.jpg" alt="Registrar Signature">
+                            <p>Jazuli Adam Sulaiman</p>
+                            <p>CompuTech Nexus Academy</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                `;
+                // Send the application letter as a downloadable file
+                res.setHeader('Content-disposition', 'attachment; filename=application_letter.html');
+                res.setHeader('Content-type', 'text/html');
+                res.write(applicationLetter);
+                res.end();
+            } else {
+                res.status(404).send('Student not found');
+            }
+            
+        });
+    });
+
+    // Handle request to get student details for school fees payment
+app.get('/getStudentDetails', (req, res) => {
+    const admissionNumber = req.query.admissionNumber;
+    const paymentNumber = req.query.paymentNumber;
+
+    // Query the database to fetch student details based on the admission number and payment number
+    const query = 'SELECT * FROM form_data WHERE admissionNumber = ?';
+    db.query(query, [admissionNumber], (err, result) => {
+        if (err) {
+            console.error('Error fetching student details:', err);
+            return res.status(500).send('An error occurred while fetching student details');
+        }
+
+        if (result.length === 1) {
+            const studentDetails = result[0];
+            // Determine the school fee based on the course applied and payment number
+            let schoolFee = 0;
+            if (studentDetails.courseApplied === "Web Development") {
+                schoolFee = paymentNumber === "1" ? 25000 : 25000; // First and second installment amount for Web Development
+            } else if (studentDetails.courseApplied === "Computer Appreciation") {
+                schoolFee = paymentNumber === "1" ? 10000 : 10000; // First and second installment amount for Computer Appreciation
+            }
+            studentDetails.schoolFee = schoolFee;
+            res.json(studentDetails);
+        } else {
+            res.status(404).send('Student not found');
+        }
+    });
+});
+// Handle request to get student details for school fees payment
+app.get('/getStudentDetails', (req, res) => {
+    const admissionNumber = req.query.admissionNumber;
+    const paymentNumber = req.query.paymentNumber;
+
+    // Query the database to fetch student details based on the admission number
+    const query = 'SELECT * FROM student_data WHERE admissionNumber = ?';
+    db.query(query, [admissionNumber], (err, result) => {
+        if (err) {
+            console.error('Error fetching student details:', err);
+            return res.status(500).send('An error occurred while fetching student details');
+        }
+
+        if (result.length === 1) {
+            const studentDetails = result[0];
+            // Determine the school fee based on the course applied and payment number
+            let schoolFee = 0;
+            if (studentDetails.courseApplied === "Web Development") {
+                schoolFee = paymentNumber === "1" ? 25000 : 25000; // First and second installment amount for Web Development
+            } else if (studentDetails.courseApplied === "Computer Appreciation") {
+                schoolFee = paymentNumber === "1" ? 10000 : 10000; // First and second installment amount for Computer Appreciation
+            }
+            
+            // Check if the first payment has been made before allowing the second payment
+            if (paymentNumber === "2" && !studentDetails.firstPaymentMade) {
+                return res.status(400).send('First payment has not been made. Please make the first payment before proceeding to the second.');
+            }
+
+            studentDetails.schoolFee = schoolFee;
+            studentDetails.paymentNumber = paymentNumber; // Include paymentNumber in the response
+            res.json(studentDetails);
+        } else {
+            res.status(404).send('Student not found');
+        }
+    });
+});
+
+// Handle verification of payment for school fees
+app.get('/verifyPayment', (req, res) => {
+    const referenceNumber = req.query.reference;
+    const emailAddress = req.query.email; // Email address used for payment
+    const firstName = req.query.firstName;
+    const admissionNumber = req.query.admissionNumber;
+    const schoolFee = req.query.schoolFee;
+    const paymentNumber = req.query.paymentNumber;
+
+    // Query the database to verify payment based on the reference number and admission number
+    const query = 'SELECT * FROM payments WHERE referenceNumber = ? AND admissionNumber = ?';
+    db.query(query, [referenceNumber, admissionNumber], (err, result) => {
+        if (err) {
+            console.error('Error verifying payment:', err);
+            return res.status(500).send('An error occurred while verifying payment');
+        }
+
+        if (result.length === 1) {
+            // Payment is verified
+            const paymentDetails = result[0];
+
+            // Update form_data table with username and password for login
+            const updateQuery = 'UPDATE form_data SET username = ?, password = ? WHERE admissionNumber = ?';
+            // Set username and password as admissionNumber
+            const username = admissionNumber;
+            const password = admissionNumber; // Set password same as username (admission number)
+            db.query(updateQuery, [username, password, admissionNumber], (err, result) => {
+                if (err) {
+                    console.error('Error updating form_data table:', err);
+                    return res.status(500).send('An error occurred while updating form_data table');
+                }
+
+                // Update reference numbers based on paymentNumber
+                let updateRefQuery = '';
+                if (paymentNumber === "1") {
+                    updateRefQuery = 'UPDATE form_data SET firstPayreferenceNumber = ? WHERE admissionNumber = ?';
+                } else if (paymentNumber === "2") {
+                    updateRefQuery = 'UPDATE form_data SET secondPayreferenceNumber = ? WHERE admissionNumber = ?';
+                }
+
+                db.query(updateRefQuery, [referenceNumber, admissionNumber], (err, result) => {
+                    if (err) {
+                        console.error('Error updating reference numbers:', err);
+                        return res.status(500).send('An error occurred while updating reference numbers');
+                    }
+
+                    // Send response with success message and instructions for login
+                    const successMessage = `Payment verified successfully for ${firstName}. Use your admission number (${admissionNumber}) as both username and password to login.`;
+                    res.send(successMessage);
+                });
+            });
+        } else {
+            // Payment not found
+            res.status(404).send('Payment not found or not associated with the given admission number.');
+        }
+    });
+});
+
+    // Handle request to get student details for application fee
+    app.get('/getStudentDetails', (req, res) => {
+        const applicationNumber = req.query.applicationNumber;
+
+        // Query the database to fetch student details based on the application number
+        const query = 'SELECT * FROM form_data WHERE applicationNumber = ?';
+        db.query(query, [applicationNumber], (err, result) => {
+            if (err) {
+                console.error('Error fetching student details:', err);
+                return res.status(500).send('An error occurred while fetching student details');
+            }
+
+            if (result.length === 1) {
+                const studentDetails = result[0];
+                res.json(studentDetails);
+            } else {
+                res.status(404).send('Student not found');
+            }
+        });
+    });
+
+    // Handle verification of payment
+    app.get('/verifyPayment', (req, res) => {
+        const referenceNumber = req.query.reference;
+        const emailAddress = req.query.email; // Email address used for payment
+        const firstName = req.query.firstName;
+        const applicationNumber = req.query.applicationNumber;
+        const applicationFee = req.query.applicationFee;
+
+        // Generate admission number
+        const admissionNumberPrefix = 'CNA240'; // Admission number prefix format
+        const randomDigit = Math.floor(Math.random() * 1000); // Generate a random digit between 0 and 9
+        const admissionNumber = `${admissionNumberPrefix}${randomDigit}`; // Concatenate prefix and random digit
+
+      // Update the reference number and admission number in the database for the corresponding payment
+const updateQuery = 'UPDATE form_data SET referenceNumber = ?, admissionNumber = ? WHERE applicationNumber = ? AND emailAddress = ? AND referenceNumber = ""';
+db.query(updateQuery, [referenceNumber, admissionNumber, applicationNumber, emailAddress], (updateErr, updateResult) => {
+    if (updateErr) {
+        console.error('Error updating reference number in the database:', updateErr);
+        return res.status(500).send('An error occurred while verifying payment');
+    }
+    if (updateResult.affectedRows === 1) {
+        const appVerifyMessage = `Dear ${firstName}, Your payment for the application fee of ${applicationFee} with reference number ${referenceNumber} has been verified successfully! Your admission number is ${admissionNumber}. Please proceed to make the payment for registration Fee with your admission number.`;
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Payment Verification</title>
+                <style>
+                    body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        text-align: center;
+                    }
+                    .appVerifyMessage {
+                        width: 80%;
+                        max-width: 600px;
+                        margin: auto;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="appVerifyMessage">
+                    <p>${appVerifyMessage}</p>
+                    <p>Click <a href="/download_admission_letter/${admissionNumber}" target="_blank">here</a> to download or print your admission number letter.</p>
+                    <p>Click continue to proceed to pay your school fees</p>
+                    <form action="/school_payment" method="GET">
+                        <button type="submit">Continue</button>
+                    </form>
+                </div>
+            </body>
+            </html>
+        `);
+    } else {
+        res.status(404).send('Payment verification failed');
+    }
+});
+
+// Serve the admission letter based on admission number
+app.get('/download_admission_letter/:admissionNumber', (req, res) => {
+    const admissionNumber = req.params.admissionNumber;
+
+    // Query the database to fetch student details based on the admission number
+    const query = 'SELECT * FROM form_data WHERE admissionNumber = ?';
+    db.query(query, [admissionNumber], (err, result) => {
+        if (err) {
+            console.error('Error fetching student details:', err);
+            return res.status(500).send('An error occurred while fetching student details');
+        }
+
+        if (result.length === 1) {
+            const studentDetails = result[0];
+            // Generate the content of the admission letter
+            const admissionLetter = `
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Admission Letter</title>
+                    <style>
+                        body {
+                            text-align: center;
+                            font-family: Arial, sans-serif;
+                        }
+                        .school-name {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-top: 40px; /* Adjust margin to push the school name down */
+                            margin-bottom: 40px;
+                        }
+                        .school-logo {
+                            margin-bottom: 15px;
+                            width: 110px; /* Adjust the width and height to your preference */
+                            height: 110px;
+                            border-radius: 50%; /* Make the image circular */
+                            object-fit: cover; /* Ensure the image covers the circular area */
+                        }
+                        .admission-letter {
+                            margin: auto;
+                            max-width: 600px;
+                            padding: 20px;
+                            border: 2px solid #000;
+                        }
+                        .signature {
+                            margin-top: 40px;
+                            text-align: right;
+                        }
+                        .signature img {
+                            width: 150px; /* Adjust the width of the signature image */
+                            height: auto;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="school-name"><h1>CompuTech Nexus Academy</h1></div>
+                    <h3>32Km, Maiduguri Road, Gano 2 Primary School, Dawakin Kudu L.G.A, Kano, Nigeria<br></h3>
+                    <h4>Contact: shamsusabocom@gmail.com, 1440shamsusabo@gmail.com</h4>
+                    <center><h4>08030909793</h4></center>
+                    <img src="logo.jpg" class="school-logo" alt="Logo">
+                    <div class="admission-letter">
+                    <h1>Admission Letter</h1>
+                    <p>Dear <strong>${studentDetails.firstName} ${studentDetails.surname}</strong>,</p>
+                    <p>Congratulations! You have been admitted to study ${studentDetails.courseApplied} at CompuTech Nexus Academy.</p>
+                    <p>Your admission number is <strong>${admissionNumber}</strong>.</p>
+                    <p>Please keep this letter safe as proof of your admission.</p>
+                    <p>As a student at our institution, you are required to adhere to the following conditions:</p>
+                    <ul>
+                        <li>Ensure you have access to a computer throughout your studies.</li>
+                        <li>Pay a non-refundable school fee of N50,000 for the Web Development program (to be paid in two installments of N25,000) or N20,000 for the Computer Appreciation program (to be paid in two installments of N10,000).</li>
+                        <li>Be punctual in submitting your projects as late submissions may result in deductions.</li>
+                        <li>Dedicate 2-3 hours daily for practical exercises as our programs are 90% practical-based.</li>
+                        <li>Maintain discipline throughout your studies.</li>
+                        <li>Ensure your evaluation scores are not less than 65% to be eligible for certificate issuance.</li>
+                    </ul>
+                    <p>Please download this admission letter. Bring the hardcopy of your uploaded credentials along with this admission letter, and a duly signed and dated handwritten acceptance letter for documentation at the school.</p>
+                    <p>We look forward to welcoming you to our institution.</p>
+                    <p>Please keep this letter safe as proof of your admission.</p> 
+                    <div class="signature">
+                        <p>Registrar</p>
+                        <img src="registrar_signature.jpg" alt="Registrar Signature">
+                        <p>Jazuli Adam Sulaiman</p>
+                        <p>CompuTech Nexus Academy</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            // Set response headers for file download
+            res.setHeader('Content-disposition', 'attachment; filename=admission_letter.html');
+            res.setHeader('Content-type', 'text/html');
+            // Send the admission letter content as a downloadable file
+            res.write(admissionLetter);
+            res.end();
+        } else {
+            res.status(404).send('Student not found');
+        }
+    });
+});
+
+    });
+};

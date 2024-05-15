@@ -135,7 +135,9 @@ body {
   background-image: url('web.jpg');
 }
 
-
+.dropdown-toggle::after {
+  display: none !important;
+}
 
 
 .container-welcome h1 {

@@ -1,29 +1,31 @@
 $(document).ready(function() {
-  // Handle form submission to get student details
-  $('#getAdmissionDetailsForm').submit(function(e) {
-    e.preventDefault();
-    var admissionNumber = $('#admissionNumber').val();
-    $.get('/getStudentinfo', { admissionNumber: admissionNumber })
-      .done(function(data) {
-        var studentDetails = '<p>Student Details:</p><p>Name: ' + data.firstName + ' ' + data.surname + ' ';
-        if (data.lastName) {
-          studentDetails += data.lastName;
-        }
-        studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p><p>Installment Amount: ' + data.firstInstallmentFee + '</p>';
-        $('#studentDetails').html(studentDetails);
-        $('#admissionNumberPayment').val(admissionNumber);
-        $('#first-name').val(data.firstName); // Populate first name input
-        $('#last-name').val(data.lastName); // Populate last name input
-        $('#sur-name').val(data.surname);
-        $('#email-address-payment').val(data.emailAddress); // Populate email address input
-        $('#amount').val(data.firstInstallmentFee); // Populate amount input with first installment fee
-        $('#getAdmissionDetailsForm').hide(); // Hide get details form
-        $('#makeAdmissionPaymentForm').show(); // Show proceed to payment form
-      })
-      .fail(function() {
-        $('#studentDetails').html('<p class="text-danger">Student not found!</p>');
-        $('#makeAdmissionPaymentForm').hide(); // Hide proceed to payment form if student not found
-      });
+// Handle form submission to get student details
+$('#getAdmissionDetailsForm').submit(function(e) {
+  e.preventDefault();
+  var admissionNumber = $('#admissionNumber').val();
+  $.get('/getStudentinfo', { admissionNumber: admissionNumber })
+    .done(function(data) {
+      var studentDetails = '<p>Student Details:</p><p>Name: ' + data.firstName + ' ' + data.surname + ' ';
+      if (data.lastName) {
+        studentDetails += data.lastName;
+      }
+      studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p><p>Installment Amount: ' + data.firstInstallmentFee + '</p>';
+      
+      
+      $('#studentDetails').html(studentDetails);
+      $('#admissionNumberPayment').val(admissionNumber);
+      $('#first-name').val(data.firstName); // Populate first name input
+      $('#last-name').val(data.lastName); // Populate last name input
+      $('#sur-name').val(data.surname);
+      $('#email-address-payment').val(data.emailAddress); // Populate email address input
+      $('#amount').val(data.firstInstallmentFee); // Populate amount input with first installment fee
+      $('#getAdmissionDetailsForm').hide(); // Hide get details form
+      $('#makeAdmissionPaymentForm').show(); // Show proceed to payment form
+    })
+    .fail(function() {
+      $('#studentDetails').html('<p class="text-danger">Student not found!</p>');
+      $('#makeAdmissionPaymentForm').hide(); // Hide proceed to payment form if student not found
+     });
   });
 
   // Proceed to payment with fetched details

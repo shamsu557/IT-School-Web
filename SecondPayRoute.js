@@ -5,22 +5,22 @@ module.exports = function (app) {
     app.post('/submit', (req, res) => {
         const { courseApplied, admissionNumber } = req.body;
         // Calculate first installment fee and school fee and determine duration based on the course applied
-        let firstInstallmentFee = 0;
+        let secondInstallmentFee = 0;
         let schoolFee = 0;
         let duration = '';
         switch (courseApplied.toLowerCase()) {
             case 'web development':
-                firstInstallmentFee = 25000;
+                secondInstallmentFee = 25000;
                 schoolFee = 50000;
                 duration = 'four months';
                 break;
             case 'computer application':
-                firstInstallmentFee = 10000;
+                secondInstallmentFee = 10000;
                 schoolFee = 20000;
                 duration = 'six weeks';
                 break;
             default:
-                firstInstallmentFee = 0;
+                secondInstallmentFee = 0;
                 schoolFee = 0;
                 duration = 'to be determined';
                 break;
@@ -29,7 +29,7 @@ module.exports = function (app) {
     });
 
     // Handle request to get student details
-    app.get('/getStudentinfo', (req, res) => {
+    app.get('/getStudentRecord', (req, res) => {
         const admissionNumber = req.query.admissionNumber;
         // Query the database to fetch student details based on the admission number
         const query = 'SELECT * FROM form_data WHERE admissionNumber = ?';
@@ -41,24 +41,24 @@ module.exports = function (app) {
 
             if (result.length === 1) {
                 const studentDetails = result[0];
-                let firstInstallmentFee = 0;
+                let secondInstallmentFee = 0;
                 let schoolFee = 0;
                 switch (studentDetails.courseApplied.toLowerCase()) {
                     case 'web development':
                         schoolFee = 50000;
-                        firstInstallmentFee= 100; 
+                        secondInstallmentFee= 100; 
                         break;
                     case 'computer application':
                         schoolFee = 20000;
-                        firstInstallmentFee = 101; 
+                        secondInstallmentFee = 101; 
                         break;
                     default:
                         schoolFee = 0;
-                        firstInstallmentFee = 0;
+                        secondInstallmentFee = 0;
                         break;
                 }
                 studentDetails.schoolFee = schoolFee;
-                studentDetails.firstInstallmentFee = firstInstallmentFee;
+                studentDetails.secondInstallmentFee = secondInstallmentFee;
                 res.json(studentDetails);
             } else {
                 res.status(404).send('Student not found');
@@ -67,10 +67,10 @@ module.exports = function (app) {
     });
 
     // Handle verification of payment
-    app.get('/verifyPay', (req, res) => { // Changed endpoint to /verifyPay
-        const firstPayreferenceNumber = req.query.reference;
+    app.get('/Payment', (req, res) => { // Changed endpoint to /verifyPay
+        const secondPayreferenceNumber = req.query.reference;
         const emailAddress = req.query.email; // Email address used for payment
-        const firstInstallmentFee = req.query.firstInstallmentFee;
+        const secondInstallmentFee = req.query.secondInstallmentFee;
         const firstName = req.query.firstName;
 
         // Retrieve admission number from the form_data table
@@ -82,15 +82,15 @@ module.exports = function (app) {
             }
             if (result.length === 1) {
                 // Update the reference number, username, and password in the database for the corresponding payment
-                const existingAdmissionNumber = result[0].admissionNumber; // Retrieve the admission number from the query result
-                const updateQuery = 'UPDATE form_data SET firstPayreferenceNumber = ?, username = ?, password = ? WHERE admissionNumber = ?';
-                db.query(updateQuery, [firstPayreferenceNumber, existingAdmissionNumber, existingAdmissionNumber, existingAdmissionNumber], (updateErr, updateResult) => {
+                const presentAdmissionNumber = result[0].admissionNumber; // Retrieve the admission number from the query result
+                const updateQuery = 'UPDATE form_data SET secondPayreferenceNumber = ? WHERE admissionNumber = ?';
+                db.query(updateQuery, [secondPayreferenceNumber, presentAdmissionNumber], (updateErr, updateResult) => {
                     if (updateErr) {
                         console.error('Error updating reference number in the database:', updateErr); // Log the error
                         return res.status(500).send('An error occurred while verifying payment');
                     }
                     if (updateResult.affectedRows === 1) {
-                        const paymentMessage = `Dear ${firstName}, Your payment for the first installment fee  with reference number ${firstPayreferenceNumber}  has been verified successfully!. Please check your email for the payment receipt download. Kindly keep it for your records. Use your admission number ${existingAdmissionNumber} as username and password to login.`;
+                        const payMessage = `Dear ${firstName}, Your payment for the second installment fee  with reference number ${secondPayreferenceNumber}  has been verified successfully!.`;
                         res.send(`
                             <!DOCTYPE html>
                             <html lang="en">
@@ -116,8 +116,7 @@ module.exports = function (app) {
                             </head>
                             <body>
                                 <div class="successMessage">
-                                    <p>${paymentMessage}</p>
-                                    <p>Click <a href="/login">here</a> to proceed to login page.</p>
+                                    <p>${payMessage}</p>
                                 </div>
                             </body>
                             </html>

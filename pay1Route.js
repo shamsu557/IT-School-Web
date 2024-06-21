@@ -10,13 +10,13 @@ module.exports = function (app) {
         let duration = '';
         switch (courseApplied.toLowerCase()) {
             case 'web development':
-                firstInstallmentFee = 25000;
-                schoolFee = 50000;
+                firstInstallmentFee = 110;
+                schoolFee = 220;
                 duration = 'four months';
                 break;
             case 'computer application':
-                firstInstallmentFee = 10000;
-                schoolFee = 20000;
+                firstInstallmentFee = 100;
+                schoolFee = 200;
                 duration = 'six weeks';
                 break;
             default:
@@ -45,12 +45,12 @@ app.get('/getStudentinfo', (req, res) => {
             let schoolFee = 0;
             switch (studentDetails.courseApplied.toLowerCase()) {
                 case 'web development':
-                    schoolFee = 50000;
-                    firstInstallmentFee= 100; 
+                    schoolFee = 220;
+                    firstInstallmentFee= 110; 
                     break;
                 case 'computer application':
-                    schoolFee = 20000;
-                    firstInstallmentFee = 101; 
+                    schoolFee = 200;
+                    firstInstallmentFee = 100; 
                     break;
                 default:
                     schoolFee = 0;

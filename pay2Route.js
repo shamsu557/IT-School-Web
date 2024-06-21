@@ -21,13 +21,13 @@ module.exports = function (app) {
                 let duration = '';
                 switch (courseApplied.toLowerCase()) {
                     case 'web development':
-                        secondInstallmentFee = 100;
-                        schoolFee = 100;
+                        secondInstallmentFee = 110;
+                        schoolFee = 220;
                         duration = 'four months';
                         break;
                     case 'computer application':
-                        secondInstallmentFee = 101;
-                        schoolFee = 101;
+                        secondInstallmentFee = 100;
+                        schoolFee = 200;
                         duration = 'six weeks';
                         break;
                     default:
@@ -69,12 +69,12 @@ module.exports = function (app) {
                 let schoolFee = 0;
                 switch (studentDetails.courseApplied.toLowerCase()) {
                     case 'web development':
-                        schoolFee = 50000;
-                        secondInstallmentFee = 100;
+                        schoolFee = 220;
+                        secondInstallmentFee = 110;
                         break;
                     case 'computer application':
-                        schoolFee = 20000;
-                        secondInstallmentFee = 101;
+                        schoolFee = 200;
+                        secondInstallmentFee = 100;
                         break;
                     default:
                         schoolFee = 0;

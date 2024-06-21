@@ -1,19 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const multer = require('multer');
 const mysql = require('./mysql');
 const routes = require('./routes');
 const secondPaymntRoute = require('./pay2Route');
 const firstPayRoute = require('./pay1Route');
 const fs = require('fs');
-
-
-const uploadDir = 'uploads';
-
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
 
 const app = express();
 
@@ -31,29 +23,6 @@ app.use((err, req, res, next) => {
 // Serve static files from the root directory
 app.use(express.static(__dirname));
 
-// Set up multer storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir); // Destination folder for uploaded files
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname); // Unique filename for uploaded files
-    }
-});
-
-// File filter to allow only jpeg, jfif, and pdf files
-const fileFilter = (req, file, cb) => {
-    const filetypes = /jpeg|jpg|jfif|pdf/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    if (mimetype && extname) {
-        return cb(null, true);
-    }
-    cb(new Error('Only .jpeg, .jpg, .jfif, and .pdf files are allowed!'));
-};
-
-// Create multer instance with storage and file filter
-const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 // Serve HTML files
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));

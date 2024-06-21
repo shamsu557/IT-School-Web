@@ -1,48 +1,45 @@
-$(document).ready(function() {
+    $(document).ready(function() {
+    // Initially hide the security answer container
+    $('#securityAnswerContainer').hide();
+
+    // Show/hide security answer container based on security question selection
+    $('#securityQuestion').change(function() {
+        if ($(this).val()) {
+            $('#securityAnswerContainer').show();
+        } else {
+            $('#securityAnswerContainer').hide();
+        }
+    });
+
     // Function to handle click event for View Application button
     $('#viewButton').click(function() {
         // Hide the application form and show the application details
         $('#applicationForm').hide();
         $('#applicationDetails').show();
 
-        // Function to create an image preview URL
-        function getImagePreview(inputId) {
-            const input = $(`#${inputId}`)[0];
-            if (input.files && input.files[0]) {
-                return URL.createObjectURL(input.files[0]);
-            }
-            return '';
-        }
-// Gather data from the form
-var applicationDetails = `
-    <h3>Application Details</h3>
-    <p><strong>Surname:</strong> ${$('#surname').val()}</p>
-    <p><strong>First Name:</strong> ${$('#firstName').val()}</p>
-    <p><strong>Last Name:</strong> ${$('#lastName').val()}</p>
-    <p><strong>Address:</strong> ${$('#address').val()}</p>
-    <p><strong>Email Address:</strong> ${$('#emailAddress').val()}</p>
-    <p><strong>Phone Number:</strong> ${$('#phoneNumber').val()}</p>
-    <p><strong>Date of Birth:</strong> ${$('#dob').val()}</p>
-    <p><strong>Highest Qualification:</strong> ${$('#highestQualification').val()}</p>
-    <p><strong>Course Applied:</strong> ${$('#courseApplied').val()}</p>
-    <p><strong>Have a Computer Certificate?:</strong> ${$('#hasComputerCertificate').val()}</p>
-    <p><strong>Picture:</strong> <img src="${getImagePreview('picture')}" alt="Picture" style="max-width: 100px;"></p>
-    <p><strong>Primary Certificate:</strong> <img src="${getImagePreview('primaryCert')}" alt="Primary Certificate" style="max-width: 100px;"></p>
-    <p><strong>Secondary School Certificate:</strong> <img src="${getImagePreview('secondaryCert')}" alt="Secondary Certificate" style="max-width: 100px;"></p>
-    <p><strong>Higher Institution Certificate:</strong> <img src="${getImagePreview('higherCert')}" alt="Higher Certificate" style="max-width: 100px;"></p>
-    <p><strong>Computer Certificate:</strong> <img src="${getImagePreview('computerCert')}" alt="Computer Certificate" style="max-width: 100px;"></p>
-    <button type="button" id="okButton" class="btn btn-primary">OK</button>
-    <button type="button" id="detailsEditButton" class="btn btn-warning">Edit Application</button>
-`;
+        // Gather data from the form
+        var applicationDetails = `
+            <p><strong>Surname:</strong> ${$('#surname').val()}</p>
+            <p><strong>First Name:</strong> ${$('#firstName').val()}</p>
+            <p><strong>Last Name:</strong> ${$('#lastName').val()}</p>
+            <p><strong>Address:</strong> ${$('#address').val()}</p>
+            <p><strong>Email Address:</strong> ${$('#emailAddress').val()}</p>
+            <p><strong>Phone Number:</strong> ${$('#phoneNumber').val()}</p>
+            <p><strong>Date of Birth:</strong> ${$('#dob').val()}</p>
+            <p><strong>Country:</strong> ${$('#country').val()}</p>
+            <p><strong>State:</strong> ${$('#state').val()}</p>
+            <p><strong>Local Government:</strong> ${$('#localGovernment').val()}</p>
+            <p><strong>Security Question:</strong> ${$('#securityQuestion').val()}</p>
+            <p><strong>Security Answer:</strong> ${$('#securityAnswer').val()}</p>
+            <p><strong>Highest Qualification:</strong> ${$('#highestQualification').val()}</p>
+            <p><strong>Course Applied:</strong> ${$('#courseApplied').val()}</p>
+            <p><strong>Computer Lietracy Level:</strong> ${$('#computerLiteracyLevel').val()}</p>
+            <button type="button" id="okButton" class="btn btn-primary">OK</button>
+            <button type="button" id="detailsEditButton" class="btn btn-warning">Edit Application</button>
+        `;
 
         // Display the application details
         $('#detailsContent').html(applicationDetails);
-
-        // Send a request to fetch the application form based on the application number
-        var applicationNumber = $('#applicationNumber').val(); // Assuming you have an input field with id 'applicationNumber'
-        $.get(`/application_form/${applicationNumber}`, function(data) {
-            // Handle the response if needed
-        });
 
         // Function to handle click event for OK button
         $('#okButton').click(function() {
@@ -92,7 +89,7 @@ var applicationDetails = `
             if (data.lastName) {
                 studentDetails += data.lastName;
             }
-            studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p>';
+            studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Local Government: ' + data.localGovernment +  '</p><p>Admission Number: ' + data.admissionNumber +'</p><p>State: ' + data.state +  '</p><p>Computer Lietracy Level: ' + data.computerLiteracyLevel +  '</p><p>Country: ' + data.country+  '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p>';
             $('#studentDetails').html(studentDetails);
             $('#admissionNumberPayment').val(admissionNumber);
             $('#first-name').val(data.firstName); // Populate first name input

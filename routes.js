@@ -3,7 +3,7 @@ const db = require('./mysql');
 module.exports = function (app) {
     // Handle form submission
     app.post('/submit', (req, res) => {
-        const { surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert } = req.body;
+        const { surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied,computerLiteracyLevel, country, state, localGovernment, securityQuestion, securityAnswer } = req.body;
         // Check if the email or phone number already exists in the database
         const checkIfExistsQuery = 'SELECT * FROM form_data WHERE emailAddress = ? OR phoneNumber = ?';
         db.query(checkIfExistsQuery, [emailAddress, phoneNumber], (checkErr, checkResult) => {
@@ -16,23 +16,28 @@ module.exports = function (app) {
                 // Email or phone number already exists in the database
                 return res.status(400).send('Email address or phone number already registered');
             }
-    // Calculate application fee and determine duration based on the course applied
-    let applicationFee = 0;
-    let duration = '';
-    switch (courseApplied.toLowerCase()) {
-        case 'web development':
-            applicationFee = 100;
-            duration = 'four months';
-            break;
-        case 'computer application':
-            applicationFee = 110;
-            duration = 'six weeks';
-            break;
-        default:
-            applicationFee = 0;
-            duration = 'to be determined';
-            break;
-    }
+   // Calculate application fee, determine duration, and set school fee based on the course applied
+let applicationFee = 0;
+let duration = '';
+let schoolFee = 0;
+switch (courseApplied.toLowerCase()) {
+    case 'web development':
+        applicationFee = 110;
+        duration = 'four months';
+        schoolFee = 220;
+        break;
+    case 'computer application':
+        applicationFee = 100;
+        duration = 'six weeks';
+        schoolFee = 200;
+        break;
+    default:
+        applicationFee = 0;
+        duration = 'to be determined';
+        schoolFee = 0;
+        break;
+}
+
 
     // Generate temporary application number
     let initials = '';
@@ -55,8 +60,8 @@ module.exports = function (app) {
     const applicationNumber = initials + courseAbbreviation + uniqueNumber;
 
     // Insert form data into MySQL database with empty reference number and no admission number
-    const insertQuery = 'INSERT INTO form_data (applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert, applicationFee, referenceNumber, admissionNumber, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(insertQuery, [applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, hasComputerCertificate, picture, primaryCert, secondaryCert, higherCert, computerCert, applicationFee, '', '', '', ''], (insertErr, insertResult) => {
+    const insertQuery = 'INSERT INTO form_data (applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, computerLiteracyLevel, country, state, localGovernment, securityQuestion, securityAnswer, applicationFee, schoolFee, referenceNumber, admissionNumber, username, password) VALUES (?,?,?,?,?,?, ?, ?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(insertQuery, [applicationNumber, surname, firstName, lastName, address, emailAddress, phoneNumber, dob, highestQualification, courseApplied, computerLiteracyLevel, country, state, localGovernment, securityQuestion, securityAnswer, applicationFee, schoolFee, '', '', '', ''], (insertErr, insertResult) => {
         if (insertErr) {
             console.error('Error inserting data into MySQL:', insertErr);
             return res.status(500).send('An error occurred while submitting the form');
@@ -171,13 +176,12 @@ app.get('/application_form/:applicationNumber', (req, res) => {
                 <p>Address: <strong>${studentDetails.address}</strong></p>
                 <p>Email Address: <strong>${studentDetails.emailAddress}</strong></p>
                 <p>Phone Number: <strong>${studentDetails.phoneNumber}</strong></p>
+                <p>Phone Country: <strong>${studentDetails.country}</strong></p>
+                <p>Phone State: <strong>${studentDetails.state}</strong></p>
+                <p>Local Government: <strong>${studentDetails.localGovernment}</strong></p>
                 <p>Highest Qualification: <strong>${studentDetails.highestQualification}</strong></p>
                 <p>Course Applied: <strong>${studentDetails.courseApplied}</strong></p>
-                <p>Have a Computer Certificate?: <strong>${studentDetails.hasComputerCertificate}</strong></p>
-                <p>Primary Certificate: <strong>${studentDetails.primaryCert}</strong></p>
-                <p>Secondary School Certificate: <strong>${studentDetails.secondaryCert}</strong></p>
-                <p>Higher Institution Certificate: <strong>${studentDetails.higherCert}</strong></p>
-                <p>Computer Certificate: <strong>${studentDetails.computerCert}</strong></p>
+                <p>Computer Lietracy Level: <strong>${studentDetails.computerLiteracyLevel}</strong></p>
                 </div>
             </body>
             </html>
@@ -351,9 +355,9 @@ if (result.length === 1) {
         <p>As a student at our institution, you are required to adhere to the following conditions:</p>
         <ul>
             <li>Ensure you have access to a computer throughout your studies.</li>
-            <li>Pay a non-refundable school fee of N50,000 for the Web Development program (to be paid in two installments of N25,000) or N20,000 for the Computer Appreciation program (to be paid in two installments of N10,000).</li>
+            <li>Make sure you read our terms and conditions on the application page </li>
             <li>Be punctual in submitting your projects as late submissions may result in deductions.</li>
-            <li>Dedicate 2-3 hours daily for practical exercises as our programs are 90% practical-based.</li>
+            <li>Dedicate 2-3 hours daily for practical exercises as our programs are 85% practical-based.</li>
             <li>Maintain discipline throughout your studies.</li>
             <li>Ensure your evaluation scores are not less than 65% to be eligible for certificate issuance.</li>
         </ul>

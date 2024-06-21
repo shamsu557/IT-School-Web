@@ -43,149 +43,172 @@
     <div class="container center-form pt-1">
         <div class="form-container">
             <h1 class="text-center">Application Form</h1>
-            <!-- Added view and edit buttons -->
            
-                    <form action="/submit" method="post" id="applicationForm">
-                        <div id="personalInfo">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="surname">Surname:</label>
-                                    <input type="text" class="form-control" id="surname" name="surname" required>
-                                    <div class="invalid-feedback">Please enter your surname.</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="firstName">First Name:</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
-                                    <div class="invalid-feedback">Please enter your first name.</div>
-                                </div>
+            <form action="/submit" method="post" id="applicationForm">
+                <div id="personalInfo">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="surname">Surname:</label>
+                                <input type="text" class="form-control" id="surname" name="surname" required>
+                                <div class="invalid-feedback">Please enter your surname.</div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="lastName">Last Name:</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="address">Address:</label>
-                                    <input type="text" class="form-control" id="address" name="address" required aria-label="Address">
-                                    <div class="invalid-feedback">Please enter your address.</div> <!-- Error message for validation -->
-                                </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstName">First Name:</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                <div class="invalid-feedback">Please enter your first name.</div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="emailAddress">Email Address:</label>
-                                    <input type="email" class="form-control" id="emailAddress" name="emailAddress" required aria-label="Email Address">
-                                    <div class="invalid-feedback">Please enter a valid email address.</div> <!-- Error message for validation -->
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="phoneNumber">Phone Number:</label>
-                                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required aria-label="Phone Number">
-                                    <div class="invalid-feedback">Please enter your phone number.</div> <!-- Error message for validation -->
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastName">Last Name:</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="dob">Date of Birth:</label>
-                                    <input type="date" class="form-control" id="dob" name="dob" required aria-label="Date of Birth">
-                                    <div class="invalid-feedback">Please enter your date of birth.</div> <!-- Error message for validation -->
-                                </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address:</label>
+                                <input type="text" class="form-control" id="address" name="address" required aria-label="Address">
+                                <div class="invalid-feedback">Please enter your address.</div>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="highestQualification">Highest Qualification:</label>
-                                    <select class="form-control" id="highestQualification" name="highestQualification" required aria-label="Highest Qualification">
-                                        <option value="" disabled selected>Select Highest Qualification</option>
-                                        <option value="Primary">Primary</option>
-                                        <option value="Secondary">Secondary</option>
-                                        <option value="NCE">NCE</option>
-                                        <option value="Diploma">Diploma</option>
-                                        <option value="Degree">Degree</option>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emailAddress">Email Address:</label>
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" required aria-label="Email Address">
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number:</label>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required aria-label="Phone Number">
+                                <div class="invalid-feedback">Please enter your phone number.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="dob">Date of Birth:</label>
+                                <input type="date" class="form-control" id="dob" name="dob" required aria-label="Date of Birth">
+                                <div class="invalid-feedback">Please enter your date of birth.</div>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                 <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" id="country" name="country" required aria-label="Country">
+            <div class="invalid-feedback">Please enter your country.</div>
+        </div>
+       </div>
+     </div>
+     <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="state">State:</label>
+            <input type="text" class="form-control" id="state" name="state" required aria-label="State">
+            <div class="invalid-feedback">Please enter your state.</div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="localGovernment">Local Government:</label>
+            <input type="text" class="form-control" id="localGovernment" name="localGovernment" required aria-label="Local Government">
+            <div class="invalid-feedback">Please enter your local government.</div>
+        </div>
+    </div>
+     </div>
+     <div class="row">                  
+        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="highestQualification">Highest Qualification:</label>
+                                <select class="form-control" id="highestQualification" name="highestQualification" required aria-label="Highest Qualification">
+                                    <option value="" disabled selected>Select Highest Qualification</option>
+                                    <option value="Primary">Primary</option>
+                                    <option value="Secondary">Secondary</option>
+                                    <option value="NCE">NCE</option>
+                                    <option value="Diploma">Diploma</option>
+                                    <option value="Degree">Degree</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your highest qualification.</div>
+                            </div>
+                    </div>
         
-                                        <option value="Others">Others</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select your highest qualification.</div> <!-- Error message for validation -->
-                                </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="courseApplied">Course Applied:</label>
+                                <select class="form-control" id="courseApplied" name="courseApplied" required aria-label="Course Applied">
+                                    <option value="" disabled selected>Select Course</option>
+                                    <option value="Computer application">Computer application (6 weeks)</option>
+                                    <option value="Web Development">Web Development (4 months)</option>
+                                </select>
+                                <div class="invalid-feedback">Please select the course you are applying for.</div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="courseApplied">Course Applied:</label>
-                                    <select class="form-control" id="courseApplied" name="courseApplied" required aria-label="Course Applied">
-                                        <option value="" disabled selected>Select Course</option>
-                                        <option value="Computer application">Computer application (6 weeks)</option>
-                                        <option value="Web Development">Web Development (4 months)</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select the course you are applying for.</div> <!-- Error message for validation -->
-                                </div>
+                    </div>
+                    </div>
+                    <div class="row">                  
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="computerLiteracyLevel">Computer Literacy Level</label>
+                                <select class="form-control" id="computerLiteracyLevel" name="computerLiteracyLevel" required aria-label="Computer Literacy Level">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="none">None</option>
+                                    <option value="certificate">Certificate</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="higherDiploma">Higher Diploma</option>
+                                    <option value="degree">Degree</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your computer literacy level.</div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="hasComputerCertificate">have a Computer Certificate?</label>
-                                    <select class="form-control" id="hasComputerCertificate" name="hasComputerCertificate" required aria-label="Computer Certificate">
-                                        <option value="" disabled selected>Select</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select whether you have a computer certificate.</div> <!-- Error message for validation -->
-                                </div>
-                            </div>
-                        </div></div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="picture">Upload Picture:</label>
-                                    <input type="file" class="form-control-file" id="picture" name="picture" accept="image/*" aria-label="Upload Picture">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="primaryCert">Upload Primary Certificate:</label>
-                                    <input type="file" class="form-control-file" id="primaryCert" name="primaryCert" accept="image/*" required aria-label="Upload Primary Certificate">
-                                    <div class="invalid-feedback">Please upload primary certificate.</div> <!-- Error message for validation -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="higherCert">Upload Higher Institution Certificate:</label>
-                                    <input type="file" class="form-control-file" id="higherCert" name="higherCert" accept="image/*" aria-label="Upload Higher Institution Certificate">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="secondaryCert">Upload Secondary School Certificate:</label>
-                                    <input type="file" class="form-control-file" id="secondaryCert" name="secondaryCert" accept="image/*" aria-label="Upload Secondary School Certificate">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="computerCert">Upload Computer Certificate:</label>
-                                    <input type="file" class="form-control-file" id="computerCert" name="computerCert" accept="image/*" aria-label="Upload Computer Certificate">
-                                </div>
-                            </div></div>
-                            <div class="form-group text-center">
-                                <button type="button" id="viewButton" class="btn btn-primary">View Application</button>
-                                <button type="button" id="editButton" class="btn btn-warning" >Edit Application</button>
-                                <button type="submit" id="submitButton" class="btn btn-success" >Submit Application</button>
-                            </div>
-                        </form></div></div>
+                        </div> 
+                        <div class="col-md-6">
+         <div class="form-group">
+            <label for="securityQuestion">Security Question:</label>
+            <select class="form-control" id="securityQuestion" name="securityQuestion" required aria-label="Security Question">
+                <option value="" disabled selected>Select Security Question</option>
+                <option value="Mother's maiden name?">Mother's maiden name?</option>
+                <option value="First pet's name?">First pet's name?</option>
+                <option value="Favorite teacher's name?">Favorite teacher's name?</option>
+                <option value="Favorite book?">Favorite book?</option>
+            </select>
+            <div class="invalid-feedback">Please select a security question.</div>
+        </div>                       
+    </div>
+    
+    <div class="col-md-6">
+        <div class="form-group" id="securityAnswerContainer" style="display:none;">
+            <label for="securityAnswer">Security Answer:</label>
+            <input type="text" class="form-control" id="securityAnswer" name="securityAnswer" required aria-label="Security Answer">
+            <div class="invalid-feedback">Please enter your security answer.</div>
+        </div>
+    </div>
+</div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I have read and agree to the <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a>.
+                        </label>
+                        <div class="invalid-feedback">You must agree to the terms and conditions before submitting.</div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="button" id="viewButton" class="btn btn-primary">View Application</button>
+                    <button type="button" id="editButton" class="btn btn-warning">Edit Application</button>
+                    <button type="submit" id="submitButton" class="btn btn-success">Submit Application</button>
+                </div>
             </form>
         </div>
     </div>
@@ -204,65 +227,85 @@
             </div>
         </div>
     </div>
-                            <!-- Add more file upload fields if needed -->
-                        </div>
-                        </div>
-                        </form>
-                        </div>
-                        </div>
-                        
-            <br><br><br>
-            
-            <footer class="bg-light text-dark pt-4">
-              <div class="container">
-                  <div class="row">
-                      <div class="col-md-4">
-                        <h5>Contact</h5>
-                        <p>32Km, Maiduguri Road,<br> Gano 2 Primary School, <br> Dawakin Kudu L.G.A <br>
-                            Kano, Nigeria<br>
-                            Phone: 08030909793<br>
-                            Email: shamsusabo@gmail.com</p>
-                      </div>
-                      <div class="col-md-4">
-                          <h5>Useful Links</h5>
-                          <ul class="list-unstyled">
-                              <li><a href="index.html">Home</a></li>
-                              <li><a href="about.html">About Us</a></li>
-                              <li><a href="apply.html">Apply</a></li>
-                              <li><a href="login.html">Login</a></li>
-                              <li><a href="app_payment.html">Payments</a></li>
-                              
-                              <!-- Add your other navbar links here -->
-                          </ul>
-                      </div>
-                      <div class="col-md-4">
-                          <h5>Courses</h5>
-                          <ul class="list-unstyled">
-                            <li><a href="#WD">Web Development</a></li>
-                              <li><a href="#CA">Computer application</a></li>
-                          </ul>
-                      </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                      <div class="col-md-6">
-                          <p>&copy; 2024 CompuTech Nexus Academy</p>
-                      </div>
-                      <div class="col-md-6 text-right">
-                          <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-square mr-3"></i></a>
-                          <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter-square mr-3"></i></a>
-                          <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram-square mr-3"></i></a>
-                          <a href="https://web.whatsapp.com/" target="_blank"><i class="fab fa-whatsapp-square mr-3"></i></a>
-                      </div>
-                  </div>
-              </div>
-            </footer>
-            <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
-            <!-- Bootstrap JS, Popper.js, and jQuery -->
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="index.js"></script>
-          </body>
-          </html>
+
+    <!-- Terms and Conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>All fees are nonrefundable.</li>
+                        <li> Agree to pay a non-refundable school fee of N220 for the Web Development program (to be paid in two installments of N110) plus an application fee of N110, or N20,000 for the Computer Appreciation program (to be paid in two installments of N10,000) plus an application fee of N100.</li>
+                         <li>The program operates on Saturdays and Sundays, offering flexibility to accommodate diverse schedules.</li>
+                        <li>Your admission may be subject to termination or course reassignment if an inappropriate selection is made. Each course mandates specific certification levels.</li>
+                        <li>Safeguard your security answer diligently; it serves as a critical element for password changes and verification purposes, necessitating utmost security.</li>
+                        <li>Exercise preparedness for multiple projects and computer-based exams; readiness is paramount for successful completion.</li>
+                        <li>Access to a computer and the internet is mandatory, facilitating seamless participation in the program.</li>
+                        <li>Ensure proficiency in navigating computer systems, as the curriculum emphasizes practical learning, constituting 85% of the coursework.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br><br><br>
+    <footer class="bg-light text-dark pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>32Km, Maiduguri Road,<br> Gano 2 Primary School, <br> Dawakin Kudu L.G.A <br>
+                        Kano, Nigeria<br>
+                        Phone: 08030909793<br>
+                        Email: shamsusabo@gmail.com</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Useful Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="apply.html">Apply</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="app_payment.html">Payments</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Courses</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#WD">Web Development</a></li>
+                        <li><a href="#CA">Computer application</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 CompuTech Nexus Academy</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-square mr-3"></i></a>
+                    <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter-square mr-3"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram-square mr-3"></i></a>
+                    <a href="https://web.whatsapp.com/" target="_blank"><i class="fab fa-whatsapp-square mr-3"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

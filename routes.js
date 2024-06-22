@@ -69,7 +69,7 @@ switch (courseApplied.toLowerCase()) {
         console.log('Data inserted into MySQL table:', insertResult);
 
         // Send response with application details
-        const welcomeMessage = `Dear ${firstName}, Congratulations! You have applied to study ${courseApplied} at CompuTech Nexus Academy. The duration of the course is ${duration}. Your application number is ${applicationNumber}. The application fee is ${applicationFee}. Please download your application form and proceed to payment.`;
+        const welcomeMessage = `Dear ${firstName}, Congratulations! You have applied to study ${courseApplied} at CompuTech Nexus Academy. The duration of the course is ${duration}. Your application number is ${applicationNumber}. You are to pay The application fee of N${applicationFee} and school fee of N${schoolFee} in two installments of N${schoolFee/2} each. Please download your application form and proceed to payment.`;
         res.send(`
             <!DOCTYPE html>
             <html lang="en">
@@ -240,7 +240,7 @@ console.error('Error updating reference number in the database:', updateErr);
 return res.status(500).send('An error occurred while verifying payment');
 }
 if (updateResult.affectedRows === 1) {
-const appVerifyMessage = `Dear ${firstName}, Your payment for the application fee of ${applicationFee} with reference number ${referenceNumber} has been verified successfully! Your admission number is ${admissionNumber}. Please check your email for the payment receipt download. Kindly keep it for your records.
+const appVerifyMessage = `Dear ${firstName}, Your payment for the application fee of N${applicationFee} with reference number ${referenceNumber} has been verified successfully! Your admission number is ${admissionNumber}. Please check your email for the payment receipt download. Kindly keep it for your records.
 
 Additionally, we kindly request that you proceed to make the payment for the registration fee using your admission number.
 
@@ -354,12 +354,18 @@ if (result.length === 1) {
         <p>Please keep this letter safe as proof of your admission.</p>
         <p>As a student at our institution, you are required to adhere to the following conditions:</p>
         <ul>
-            <li>Ensure you have access to a computer throughout your studies.</li>
-            <li>Make sure you read our terms and conditions on the application page </li>
-            <li>Be punctual in submitting your projects as late submissions may result in deductions.</li>
-            <li>Dedicate 2-3 hours daily for practical exercises as our programs are 85% practical-based.</li>
-            <li>Maintain discipline throughout your studies.</li>
-            <li>Ensure your evaluation scores are not less than 65% to be eligible for certificate issuance.</li>
+           <li>Ensure you have access to a computer and the internet throughout your studies, as this is mandatory for seamless participation in the program.</li>
+                        <li>All payments and fees are non-refundable.</li>
+                        <li>Agree to pay a non-refundable school fee of ₦220 for the Web Development program (paid in two installments of ₦110) plus an application fee of ₦110, or ₦200 for the Computer Appreciation program (paid in two installments of ₦100) plus an application fee of ₦100.</li>
+                        <li>The program operates on Saturdays and Sundays, offering flexibility to accommodate diverse schedules.</li>
+                        <li>Your admission may be subject to termination or course reassignment if an inappropriate selection is made, as each course mandates specific certification levels.</li>
+                        <li>Safeguard your security answer diligently; it is a critical element for password changes and verification purposes, necessitating utmost security.</li>
+                        <li>Exercise preparedness for multiple projects and computer-based exams; readiness is paramount for successful completion.</li>
+                        <li>Be punctual in submitting your projects as late submissions may result in deductions.</li>
+                        <li>Dedicate 2-3 hours daily for practical exercises, as our programs are 85% practical-based.</li>
+                        <li>Ensure your evaluation scores are not less than 65% to be eligible for certificate issuance.</li>
+                        <li>Maintain discipline throughout your studies.</li>
+                        <li>Ensure proficiency in navigating computer systems, as the curriculum emphasizes practical learning, constituting 85% of the coursework.</li>
         </ul>
         <p>Please download this admission letter. Bring the hardcopy of your uploaded credentials along with this admission letter, and a duly signed and dated handwritten acceptance letter for documentation at the school.</p>
         <p>We look forward to welcoming you to our institution.</p>

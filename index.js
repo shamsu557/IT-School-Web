@@ -73,50 +73,27 @@
         $('#submitButton').show();
     });
 
-    // Handle form submission to get student details for school payment
+    // Handle form submission to get student details for schoolfeee payment
     $('#getAdmissionDetailsForm').submit(function(e) {
         e.preventDefault();
         var admissionNumber = $('#admissionNumber').val();
-        var paymentNumber = $('#paymentNumber').val(); // Added paymentNumber retrieval
         if (!admissionNumber) {
             alert("Please enter the admission number.");
             return;
         }
 
         // Submit admission details form
-        $.get('/getStudentDetails', { admissionNumber: admissionNumber, paymentNumber: paymentNumber }, function(data) {
+        $.get('/getStudentDetails', { admissionNumber: admissionNumber }, function(data) {
             var studentDetails = '<p>Student Details:</p><p>Name: ' + data.firstName + ' ' + data.surname + ' ';
             if (data.lastName) {
                 studentDetails += data.lastName;
             }
-            studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Local Government: ' + data.localGovernment +  '</p><p>Admission Number: ' + data.admissionNumber +'</p><p>State: ' + data.state +  '</p><p>Computer Lietracy Level: ' + data.computerLiteracyLevel +  '</p><p>Country: ' + data.country+  '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p>';
+            studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Local Government: ' + data.localGovernment +  '</p><p>Admission Number: ' + data.admissionNumber +'</p><p>State: ' + data.state +  '</p><p>Computer Lietracy Level: ' + data.computerLiteracyLevel +  '</p><p>Country: ' + data.country+  '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: NGN' + data.schoolFee + '</p>';
             $('#studentDetails').html(studentDetails);
             $('#admissionNumberPayment').val(admissionNumber);
             $('#first-name').val(data.firstName); // Populate first name input
             $('#last-name').val(data.surname); // Populate last name input
             $('#email-address-payment').val(data.emailAddress); // Populate email address input
-
-            // Determine installment amount based on course and paymentNumber
-            var installmentAmount = 0;
-            if (data.courseApplied === "Web Development") {
-                installmentAmount = paymentNumber === "1" ? 100 : 100; // First installment and second installment amount for Web Development
-            } else if (data.courseApplied === "Computer Application ") {
-                installmentAmount = paymentNumber === "1" ? 101 : 101; // First installment and second installment amount for Computer Application 
-            }
-
-            $('#amount').val(installmentAmount); // Populate amount input
-            $('#getAdmissionDetailsForm').hide(); // Hide get details form
-            $('#makeAdmissionPaymentForm').show(); // Show proceed to payment form
-
-            // Proceed to payment with fetched details
-            $('#proceedToPaymentButton').click(function(e) {
-                e.preventDefault();
-                if (!firstPaymentMade && paymentNumber === "2") {
-                    alert("Please make the first installment payment before proceeding to the second installment.");
-                    return;
-                }
-                payWithPaystack(admissionNumber, data.emailAddress); // Call function to initiate payment with admission number and email
-            });
         }).fail(function() {
             $('#studentDetails').html('<p class="text-danger">Student not found!</p>');
             $('#makeAdmissionPaymentForm').hide(); // Hide proceed to payment form if student not found
@@ -146,10 +123,6 @@
         let message = 'Payment complete! Reference: ' + reference;
         alert(message);
 
-        // If first installment is paid, set the flag to true
-        if ($('#paymentNumber').val() === "1") {
-            firstPaymentMade = true;
-        }
 
         // Display message with link to verify payment on the server side
         let verificationMessage = 'Click OK to verify your payment.';

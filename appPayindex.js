@@ -22,8 +22,8 @@ $(document).ready(function() {
       if (data.lastName) {
         studentDetails += data.lastName;
       }
-      studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Application Number: ' + data.applicationNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>Application Fee: ' + data.applicationFee + '</p>';
-      $('#studentDetails').html(studentDetails);
+      studentDetails += '</p><p>Email Address: ' + data.emailAddress +  '</p><p>Application Number: ' + data.applicationNumber +  '</p><p>Course Applied: ' + data.courseApplied +  '</p><p>Application Fee: NGN' + data.applicationFee + '</p>';
+$('#studentDetails').html(studentDetails);
       $('#applicationNumberPayment').val(applicationNumber);
       $('#first-name').val(data.firstName); // Populate first name input
       $('#last-name').val(data.surname); // Populate last name input

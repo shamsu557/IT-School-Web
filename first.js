@@ -9,7 +9,7 @@ $('#getAdmissionDetailsForm').submit(function(e) {
       if (data.lastName) {
         studentDetails += data.lastName;
       }
-      studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p><p>Installment Amount: ' + data.firstInstallmentFee + '</p>';
+      studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee:NGN ' + data.schoolFee + '</p><p>Installment Amount: NGN' + data.firstInstallmentFee + '</p>';
       
       
       $('#studentDetails').html(studentDetails);

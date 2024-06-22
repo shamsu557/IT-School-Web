@@ -9,7 +9,7 @@ $(document).ready(function() {
           if (data.lastName) {
             studentDetails += data.lastName;
           }
-          studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: ' + data.schoolFee + '</p><p>Installment Amount: ' + data.secondInstallmentFee+ '</p>';
+          studentDetails += '</p><p>Email Address: ' + data.emailAddress + '</p><p>Admission Number: ' + data.admissionNumber + '</p><p>Course Applied: ' + data.courseApplied + '</p><p>School Fee: NGN' + data.schoolFee + '</p><p>Installment Amount: NGN' + data.secondInstallmentFee+ '</p>';
           $('#studentDetails').html(studentDetails);
           $('#admissionNumberPayment').val(admissionNumber);
           $('#first-name').val(data.firstName); // Populate first name input
